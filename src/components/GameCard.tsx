@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { Play, CheckCircle2 } from 'lucide-react';
 
 interface Game {
@@ -26,9 +25,8 @@ export const GameCard: React.FC<{ game: Game }> = ({ game }) => {
   }, [game.rom]);
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, zIndex: 20 }}
-      className={`group relative bg-retro-card border-2 transition-all duration-300 rounded-lg overflow-hidden shadow-lg ${isReady ? 'border-green-500/20 hover:border-green-500' : 'border-white/5 hover:border-neogeo-yellow'}`}
+    <div
+      className={`group relative bg-retro-card border-2 transition-all duration-300 rounded-lg overflow-hidden shadow-lg ${isReady ? 'border-green-500/20 hover:border-green-500' : 'border-white/5 hover:border-neogeo-yellow'} hover:scale-105 hover:z-20`}
     >
       <Link to={`/play/${game.slug}`}>
         <div className="aspect-square relative overflow-hidden bg-black">
@@ -63,6 +61,6 @@ export const GameCard: React.FC<{ game: Game }> = ({ game }) => {
           </h3>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 };

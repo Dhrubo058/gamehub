@@ -1,24 +1,31 @@
-import React, { useState, useMemo } from "react";
-import gamesData from "../data/games.json";
+import React, { useState, useMemo, useEffect } from "react";
 import { GameCard } from "../components/GameCard";
 import { Search } from "lucide-react";
 
 export const Browse = () => {
+  const [games, setGames] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
-  const categories = useMemo(() => {
-    const cats = gamesData.map(g => g.category);
-    return ["All", ...Array.from(new Set(cats))];
+  useEffect(() => {
+    fetch('/games.json')
+      .then(res => res.json())
+      .then(data => setGames(data))
+      .catch(err => console.error('Failed to fetch games', err));
   }, []);
 
+  const categories = useMemo(() => {
+    const cats = games.map(g => g.category);
+    return ["All", ...Array.from(new Set(cats))];
+  }, [games]);
+
   const filteredGames = useMemo(() => {
-    return gamesData.filter(game => {
+    return games.filter(game => {
       const matchesSearch = game.name.toLowerCase().includes(search.toLowerCase());
       const matchesCategory = category === "All" || game.category === category;
       return matchesSearch && matchesCategory;
     });
-  }, [search, category]);
+  }, [search, category, games]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">

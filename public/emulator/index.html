@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmulatorJS - Neo Geo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+        #game {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="game"></div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameSlug = urlParams.get('game');
+        
+        if (!gameSlug) {
+            document.body.innerHTML = '<div style="color: white; text-align: center; padding-top: 50px; font-family: monospace;">ERROR: NO GAME SPECIFIED</div>';
+        } else {
+            window.EJS_player = "#game";
+            window.EJS_core = "arcade"; // Neo Geo uses arcade core in EmulatorJS
+            window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+            window.EJS_gameUrl = `/roms/neogeo/${gameSlug}.zip`;
+            window.EJS_biosUrl = "/bios/neogeo.zip";
+            window.EJS_startOnLoaded = true;
+        }
+    </script>
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+</body>
+</html>

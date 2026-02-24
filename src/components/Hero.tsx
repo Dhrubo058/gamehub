@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Play, Zap } from 'lucide-react';
 
@@ -11,12 +10,7 @@ export const Hero = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-radial-gradient from-neogeo-red/10 to-transparent blur-3xl" />
       
       <div className="max-w-7xl mx-auto px-4 w-full relative z-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-8"
-        >
+        <div className="space-y-8">
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-black border-2 border-neogeo-yellow text-neogeo-yellow font-pixel text-[10px] shadow-[4px_4px_0px_#e60012]">
             <Zap className="w-4 h-4 fill-current" />
             INSERT COIN TO START
@@ -44,7 +38,7 @@ export const Hero = () => {
               </button>
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Side Cabinet Graphics */}

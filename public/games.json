@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Metal Slug",
+    "slug": "mslug",
+    "system": "neogeo",
+    "rom": "mslug.zip",
+    "category": "Run and Gun",
+    "cover": "https://raw.githubusercontent.com/v-atamanov/retropie-neogeo-video-previews/master/boxart/mslug.png"
+  },
+  {
+    "name": "The King of Fighters '98",
+    "slug": "kof98",
+    "system": "neogeo",
+    "rom": "kof98.zip",
+    "category": "Fighting",
+    "cover": "https://raw.githubusercontent.com/v-atamanov/retropie-neogeo-video-previews/master/boxart/kof98.png"
+  },
+  {
+    "name": "Garou: Mark of the Wolves",
+    "slug": "garou",
+    "system": "neogeo",
+    "rom": "garou.zip",
+    "category": "Fighting",
+    "cover": "https://raw.githubusercontent.com/v-atamanov/retropie-neogeo-video-previews/master/boxart/garou.png"
+  },
+  {
+    "name": "Blazing Star",
+    "slug": "blazstar",
+    "system": "neogeo",
+    "rom": "blazstar.zip",
+    "category": "Arcade Classics",
+    "cover": "https://raw.githubusercontent.com/v-atamanov/retropie-neogeo-video-previews/master/boxart/blazstar.png"
+  },
+  {
+    "name": "Metal Slug 3",
+    "slug": "mslug3",
+    "system": "neogeo",
+    "rom": "mslug3.zip",
+    "category": "Run and Gun",
+    "cover": "https://raw.githubusercontent.com/v-atamanov/retropie-neogeo-video-previews/master/boxart/mslug3.png"
+  }
+]

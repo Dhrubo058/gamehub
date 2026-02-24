@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import gamesData from '../data/games.json';
 import { Hero } from '../components/Hero';
 import { GameCard } from '../components/GameCard';
-import { motion } from 'motion/react';
 import { ChevronRight, Sword, Target, LayoutGrid, Database, CheckCircle2, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Home = () => {
+  const [games, setGames] = useState<any[]>([]);
   const [romStatus, setRomStatus] = useState<{ availableRoms: string[], biosReady: boolean }>({ availableRoms: [], biosReady: false });
 
   useEffect(() => {
+    // Fetch games list
+    fetch('/games.json')
+      .then(res => res.json())
+      .then(data => setGames(data))
+      .catch(err => console.error('Failed to fetch games', err));
+
+    // Fetch ROM status
     fetch('/api/roms/status')
       .then(res => res.json())
       .then(data => setRomStatus(data))
       .catch(err => console.error('Failed to fetch ROM status', err));
   }, []);
 
-  const fightingGames = gamesData.filter(g => g.category === "Fighting");
-  const runAndGun = gamesData.filter(g => g.category === "Run and Gun");
-  const classics = gamesData.filter(g => g.category === "Arcade Classics");
+  const fightingGames = games.filter(g => g.category === "Fighting");
+  const runAndGun = games.filter(g => g.category === "Run and Gun");
+  const classics = games.filter(g => g.category === "Arcade Classics");
 
   return (
     <div className="pb-20">
@@ -65,34 +71,40 @@ export const Home = () => {
         </section>
 
         {/* Sports Section */}
-        <section>
-          <SectionHeader title="SPORTS ARENA" icon={<LayoutGrid className="text-neogeo-blue" />} color="neogeo-blue" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {gamesData.filter(g => g.category === "Sports").map((game, idx) => (
-              <GameCard key={game.slug} game={game} />
-            ))}
-          </div>
-        </section>
+        {games.filter(g => g.category === "Sports").length > 0 && (
+          <section>
+            <SectionHeader title="SPORTS ARENA" icon={<LayoutGrid className="text-neogeo-blue" />} color="neogeo-blue" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {games.filter(g => g.category === "Sports").map((game, idx) => (
+                <GameCard key={game.slug} game={game} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Puzzle Section */}
-        <section>
-          <SectionHeader title="PUZZLE MANIA" icon={<LayoutGrid className="text-neogeo-yellow" />} color="neogeo-yellow" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {gamesData.filter(g => g.category === "Puzzle").map((game, idx) => (
-              <GameCard key={game.slug} game={game} />
-            ))}
-          </div>
-        </section>
+        {games.filter(g => g.category === "Puzzle").length > 0 && (
+          <section>
+            <SectionHeader title="PUZZLE MANIA" icon={<LayoutGrid className="text-neogeo-yellow" />} color="neogeo-yellow" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {games.filter(g => g.category === "Puzzle").map((game, idx) => (
+                <GameCard key={game.slug} game={game} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Beat 'em up Section */}
-        <section>
-          <SectionHeader title="BEAT 'EM UP" icon={<Sword className="text-neogeo-red" />} color="neogeo-red" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {gamesData.filter(g => g.category === "Beat 'em up").map((game, idx) => (
-              <GameCard key={game.slug} game={game} />
-            ))}
-          </div>
-        </section>
+        {games.filter(g => g.category === "Beat 'em up").length > 0 && (
+          <section>
+            <SectionHeader title="BEAT 'EM UP" icon={<Sword className="text-neogeo-red" />} color="neogeo-red" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {games.filter(g => g.category === "Beat 'em up").map((game, idx) => (
+                <GameCard key={game.slug} game={game} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Classics Section */}
         <section>

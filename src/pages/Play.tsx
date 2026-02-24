@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import gamesData from '../data/games.json';
-import { Emulator } from '../components/Emulator';
-import { ArrowLeft, Maximize2, Info, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Maximize2, Info, ShieldAlert, Play as PlayIcon } from 'lucide-react';
 
 export const Play = () => {
   const { gamename } = useParams();
-  const game = gamesData.find(g => g.slug === gamename);
+  const [started, setStarted] = useState(false);
+  const [game, setGame] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/games.json')
+      .then(res => res.json())
+      .then(data => {
+        const found = data.find((g: any) => g.slug === gamename);
+        setGame(found);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch games', err);
+        setLoading(false);
+      });
+  }, [gamename]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center font-pixel text-gray-500">
+        LOADING VAULT...
+      </div>
+    );
+  }
 
   if (!game) {
     return (
@@ -33,8 +55,34 @@ export const Play = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-3 space-y-8">
             {/* Emulator Container */}
-            <div className="arcade-panel p-2 rounded-sm">
-               <Emulator romUrl={game.rom} core="fbneo" />
+            <div className="arcade-panel p-2 rounded-sm aspect-video relative bg-black overflow-hidden">
+               {!started ? (
+                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/80">
+                   <img 
+                     src={game.cover} 
+                     alt={game.name} 
+                     className="absolute inset-0 w-full h-full object-cover opacity-30 blur-sm"
+                     referrerPolicy="no-referrer"
+                   />
+                   <button 
+                     onClick={() => setStarted(true)}
+                     className="neon-btn neon-btn-red flex items-center gap-4 z-20"
+                   >
+                     <PlayIcon className="w-6 h-6 fill-current" />
+                     START SYSTEM
+                   </button>
+                   <p className="mt-6 font-pixel text-[8px] text-gray-500 tracking-widest">
+                     INITIALIZING 24-BIT ARCHITECTURE
+                   </p>
+                 </div>
+               ) : (
+                 <iframe 
+                   src={`/emulator/index.html?game=${game.slug}`}
+                   className="w-full h-full border-none"
+                   allowFullScreen
+                   title={game.name}
+                 />
+               )}
             </div>
 
             <div className="flex items-center justify-between bg-retro-card p-6 border-l-4 border-neogeo-yellow">
@@ -45,11 +93,17 @@ export const Play = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[8px] font-pixel text-gray-500 mb-1">CORE</span>
-                  <span className="text-[10px] font-pixel text-white">FBNEO / ARCADE</span>
+                  <span className="text-[10px] font-pixel text-white">ARCADE / FBNEO</span>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <button className="p-3 bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                <button 
+                  onClick={() => {
+                    const iframe = document.querySelector('iframe');
+                    if (iframe) iframe.requestFullscreen();
+                  }}
+                  className="p-3 bg-white/5 hover:bg-white/10 rounded-full transition-colors"
+                >
                   <Maximize2 className="w-5 h-5 text-gray-400" />
                 </button>
               </div>
